@@ -1,0 +1,288 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Desafio 1 - Chapter 2 - NodeJS",
+        "description": "Gerenciamento de Usuários",
+        "version": "1.0.0",
+        "contact": {
+            "email": "felipe.moura@gmail.com"
+        }
+    },
+    "paths": {
+        "/users": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create a new User",
+                "description": "Create a new user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "e-mail": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "category name sample",
+                                    "e-mail": "name@email.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "500": {
+                        "description": "User already exists"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "List all users",
+                "description": "Only admins can list users",
+                "parameters": [
+                    {
+                        "- in": "path",
+                        "name": "userId",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "minimum": 1,
+                        "description": "Parameter description in Markdown."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação Realizada com Sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "admin": {
+                                                "type": "boolean"
+                                            },
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "date"
+                                            },
+                                            "updated_at": {
+                                                "type": "date"
+                                            }
+                                        },
+                                        "example": [
+                                            {
+                                                "admin": true,
+                                                "id": "123456",
+                                                "name": "Felipe Moura",
+                                                "email": "felipemoura@gmail.com",
+                                                "created_at": "15/07/21",
+                                                "updated_at": "16/07/21"
+                                            },
+                                            {
+                                                "admin": true,
+                                                "id": "123456",
+                                                "name": "Felipe Moura",
+                                                "email": "felipemoura@gmail.com",
+                                                "created_at": "15/07/21",
+                                                "updated_at": "16/07/21"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Usuário sem permissão ou usuário não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "user": {
+                                                "type": "intenger"
+                                            }
+                                        },
+                                        "example": {
+                                            "error": "You need to be an administrator to list all users"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{userId}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Return an specific user",
+                "description": "Return an specific user",
+                "parameters": [
+                    {
+                        "- in": "path",
+                        "name": "userId",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "minimum": 1,
+                        "description": "Parameter description in Markdown."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação Realizada com Sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "admin": {
+                                                "type": "boolean"
+                                            }
+                                        },
+                                        "example": [
+                                            {
+                                                "admin": true,
+                                                "id": "123456",
+                                                "name": "Felipe Moura",
+                                                "email": "felipemoura@gmail.com",
+                                                "created_at": "15/07/21",
+                                                "updated_at": "16/07/21"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Usuário  não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "user": {
+                                                "type": "intenger"
+                                            }
+                                        },
+                                        "example": {
+                                            "error": "User not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{userId}/admin": {
+            "patch": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Turn an user into an admin",
+                "description": "Turn an user into an admin",
+                "parameters": [
+                    {
+                        "- in": "path",
+                        "name": "userId",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "minimum": 1,
+                        "description": "Parameter description in Markdown."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação Realizada com Sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "admin": {
+                                                "type": "boolean"
+                                            }
+                                        },
+                                        "example": [
+                                            {
+                                                "admin": true,
+                                                "id": "123456",
+                                                "name": "Felipe Moura",
+                                                "email": "felipe.moura@gmail.com",
+                                                "created_at": "15/07/21",
+                                                "updated_at": "16/07/21"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Usuário  não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "user": {
+                                                "type": "intenger"
+                                            }
+                                        },
+                                        "example": {
+                                            "error": "User not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
